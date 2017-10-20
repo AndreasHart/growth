@@ -2,10 +2,28 @@
   color: $mainColor;
   font-size: px(40);
   font-weight: 500;
-  max-width: px(1000);
+  max-width: px(500);
   margin: 0 auto;
 }
-
+.header {
+  padding: 0 28px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  position:relative;
+  height:100px;
+}
+.itemBigger {
+  display: flex;
+  top:10px;
+  width:60%;
+  padding:2%;
+}
+.item {
+  display: flex;
+  top:10px;
+  padding:2%;
+}
 .link {
   color: $yellow;
   position: relative;
@@ -29,6 +47,8 @@
 
 .p {
   color: $mainColor;
+  position: absolute;;
+  top:0;
 }
 
 .button {

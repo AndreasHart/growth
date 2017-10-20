@@ -3,15 +3,12 @@ body {
   &:before {
     content: '';
     height: 100%;
-    display: inline-block;
-    vertical-align: middle;
   }
 }
 
 :global(#app) {
   display: inline-block;
-  vertical-align: middle;
-  padding: 0 px(100);
+  padding: 0 px(10);
   text-align: center;
   width: 99%;
 }

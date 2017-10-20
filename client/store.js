@@ -1,5 +1,6 @@
-import { applyMiddleware, createStore as reduxCreateStore } from 'redux';
+import { applyMiddleware, createStore as reduxCreateStore, compose } from 'redux';
 import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
 import reducers from './reducers';
 
 const middlewares = [];
@@ -15,7 +16,7 @@ export function createStore(state) {
   return reduxCreateStore(
     reducers,
     state,
-    applyMiddleware.apply(null, middlewares)
+    applyMiddleware(thunk, ...middlewares)
   );
 }
 

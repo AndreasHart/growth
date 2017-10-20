@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_CONFIG } from './actions';
+import { SET_CONFIG, UPDATE_NAME } from './actions';
 
 function config(state = {}, action) {
   switch (action.type) {
@@ -9,5 +9,16 @@ function config(state = {}, action) {
     return state;
   }
 }
+function user(state = 'Andreas', action) {
+  switch (action.type) {
+  case UPDATE_NAME:
+    return action.name;
+  default:
+    return state;
+  }
+}
 
-export default combineReducers({config});
+export default combineReducers({
+    config,
+    user
+});

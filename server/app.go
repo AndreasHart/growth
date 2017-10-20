@@ -1,16 +1,23 @@
 package main
 
 import (
-	"html/template"
-	"io"
-	"net/http"
-
+	"flag"
+	"github.com/andreashart/newgrow/server/model"
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"html/template"
+	"io"
+	"net/http"
+)
+
+var (
+	addr = flag.String("addr", "postgresql://root@localhost:5432/reset?sslmode=disable", "the address of the database")
 )
 
 // App struct.
@@ -22,6 +29,19 @@ type App struct {
 	Conf   *config.Config
 	React  *React
 	API    *API
+}
+
+//Sets up DB on start
+func setupDB(addr string) *gorm.DB {
+	db, err := gorm.Open("postgres", addr)
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	// Migrate the schema
+	db.AutoMigrate(&model.Customer{}, &model.Order{}, &model.Product{})
+
+	return db
 }
 
 // NewApp returns initialized struct
@@ -68,11 +88,12 @@ func NewApp(opts ...AppOptions) *App {
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
 	}))
 
+	db := setupDB(*addr)
 	// Initialize the application
 	app := &App{
 		Conf:   conf,
 		Engine: engine,
-		API:    &API{},
+		API:    NewServer(db),
 		React: NewReact(
 			conf.UString("duktape.path"),
 			conf.UBool("debug"),
@@ -91,6 +112,7 @@ func NewApp(opts ...AppOptions) *App {
 	})
 
 	// Bind api hadling for URL api.prefix
+
 	app.API.Bind(
 		app.Engine.Group(
 			app.Conf.UString("api.prefix"),

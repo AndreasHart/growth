@@ -1,13 +1,13 @@
 package main
 
 import (
-	"os"
-
 	"github.com/codegangsta/cli"
+	"os"
 )
 
 func main() {
 	// defer profile.Start(profile.CPUProfile, profile.ProfilePath(".")).Stop()
+
 	Run(os.Args)
 }
 

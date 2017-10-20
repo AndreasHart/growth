@@ -10,7 +10,7 @@ class Usage extends Component {
 
   /*eslint-disable */
   static onEnter({store, nextState, replaceState, callback}) {
-    fetch('/api/v1/conf').then((r) => {
+    fetch('/api/v2/conf').then((r) => {
       return r.json();
     }).then((conf) => {
       store.dispatch(setConfig(conf));
