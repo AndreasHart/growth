@@ -29,18 +29,18 @@ func (api *API) Bind(group *echo.Group) {
 	group.PUT("/customer/:customerID", api.updateCustomer)
 	group.DELETE("/customer/:customerID", api.deleteCustomer)
 
-	// group.GET("/product", api.getProducts)
-	// group.POST("/product", api.createProduct)
-	// group.GET("/product/:productID", api.getProduct)
-	// group.PUT("/product/:productID", api.updateProduct)
-	// group.DELETE("/product/:productID", api.deleteProduct)
+	group.GET("/product", api.getProducts)
+	group.POST("/product", api.createProduct)
+	group.GET("/product/:productID", api.getProduct)
+	group.PUT("/product/:productID", api.updateProduct)
+	group.DELETE("/product/:productID", api.deleteProduct)
 
-	// group.GET("/order", api.getOrders)
-	// group.POST("/order", api.createOrder)
-	// group.GET("/order/:orderID", api.getOrder)
-	// group.PUT("/order/:orderID", api.updateOrder)
-	// group.DELETE("/order/:orderID", api.deleteOrder)
-	// group.POST("/order/:orderID/product", api.addProductToOrder)
+	group.GET("/order", api.getOrders)
+	group.POST("/order", api.createOrder)
+	group.GET("/order/:orderID", api.getOrder)
+	group.PUT("/order/:orderID", api.updateOrder)
+	group.DELETE("/order/:orderID", api.deleteOrder)
+	group.POST("/order/:orderID/product", api.addProductToOrder)
 }
 
 // ConfHandler handle the app config, for example
@@ -105,201 +105,155 @@ func (api *API) deleteCustomer(c echo.Context) (err error) {
 	}
 }
 
-// func (s *API) getProducts(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-// 	var products []model.Product
-// 	if err := s.db.Find(&products).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, products)
-// 	}
-// }
+func (api *API) getProducts(c echo.Context) error {
+	var products []model.Product
+	if err := api.db.Find(&products).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, products)
+	}
+}
 
-// func (s *API) createProduct(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	var product model.Product
-// 	if err := json.NewDecoder(r.Body).Decode(&product); err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
+func (api *API) createProduct(c echo.Context) (err error) {
+	var products *model.Product = new(model.Product)
+	if err := c.Bind(products); err != nil {
+		return err
+	}
+	if err := api.db.Create(&products).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, products)
+	}
 
-// 	if err := s.db.Create(&product).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, product)
-// 	}
-// }
+}
 
-// func (s *API) getProduct(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	var product model.Product
-// 	if err := s.db.Find(&product, ps.ByName("productID")).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, product)
-// 	}
-// }
+func (api *API) getProduct(c echo.Context) (err error) {
+	var product model.Product
+	if err := api.db.Find(&product, c.Param("customerID")).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, product)
+	}
+}
 
-// func (s *API) updateProduct(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	var product model.Product
-// 	if err := json.NewDecoder(r.Body).Decode(&product); err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
+func (api *API) updateProduct(c echo.Context) (err error) {
+	var product *model.Product = new(model.Product)
+	if err := c.Bind(product); err != nil {
+		return err
+	}
 
-// 	productID := ps.ByName("productID")
-// 	if err := s.db.Model(&product).Where("ID = ?", productID).Update(product).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, product)
-// 	}
-// }
+	productID := c.Param("productID")
+	if err := api.db.Model(&product).Where("ID = ?", productID).Update(product).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, product)
+	}
+}
 
-// func (s *API) deleteProduct(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	productID := ps.ByName("productID")
-// 	req := s.db.Delete(model.Product{}, "ID = ?", productID)
-// 	if err := req.Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else if req.RowsAffected == 0 {
-// 		http.Error(w, "", http.StatusNotFound)
-// 	} else {
-// 		writeTextResult(w, "ok")
-// 	}
-// }
+func (api *API) deleteProduct(c echo.Context) (err error) {
+	productID := c.Param("productID")
+	req := api.db.Delete(model.Product{}, "ID = ?", productID)
+	if err := req.Error; err != nil {
+		return err
+	} else if req.RowsAffected == 0 {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, productID)
+	}
+}
 
-// func (s *API) getOrders(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-// 	var orders []model.Order
-// 	if err := s.db.Preload("Customer").Preload("Products").Find(&orders).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, orders)
-// 	}
-// }
+func (api *API) getOrders(c echo.Context) error {
+	var orders []model.Order
+	if err := api.db.Find(&orders).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, orders)
+	}
+}
 
-// func (s *API) createOrder(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	var order model.Order
-// 	if err := json.NewDecoder(r.Body).Decode(&order); err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
+func (api *API) createOrder(c echo.Context) (err error) {
+	var orders *model.Order = new(model.Order)
+	if err := c.Bind(orders); err != nil {
+		return err
+	}
+	if err := api.db.Create(&orders).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, orders)
+	}
 
-// 	if order.Customer.ID == 0 {
-// 		http.Error(w, "must specify user", http.StatusBadRequest)
-// 		return
-// 	}
-// 	if err := s.db.Find(&order.Customer, order.Customer.ID).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
+}
 
-// 	for i, product := range order.Products {
-// 		if product.ID == 0 {
-// 			http.Error(w, "must specify a product ID", http.StatusBadRequest)
-// 			return
-// 		}
-// 		if err := s.db.Find(&order.Products[i], product.ID).Error; err != nil {
-// 			http.Error(w, err.Error(), errToStatusCode(err))
-// 			return
-// 		}
-// 	}
+func (api *API) getOrder(c echo.Context) (err error) {
+	var order model.Order
+	if err := api.db.Find(&order, c.Param("customerID")).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, order)
+	}
+}
 
-// 	if err := s.db.Create(&order).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, order)
-// 	}
-// }
+func (api *API) updateOrder(c echo.Context) (err error) {
+	var order *model.Order = new(model.Order)
+	if err := c.Bind(order); err != nil {
+		return err
+	}
 
-// func (s *API) getOrder(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	var order model.Order
-// 	if err := s.db.Preload("Customer").Preload("Products").Find(&order, ps.ByName("orderID")).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, order)
-// 	}
-// }
+	orderID := c.Param("orderID")
+	if err := api.db.Model(&order).Where("ID = ?", orderID).Update(order).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, order)
+	}
+}
 
-// func (s *API) updateOrder(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	var order model.Order
-// 	if err := json.NewDecoder(r.Body).Decode(&order); err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
+func (api *API) deleteOrder(c echo.Context) (err error) {
+	orderID := c.Param("orderID")
+	req := api.db.Delete(model.Order{}, "ID = ?", orderID)
+	if err := req.Error; err != nil {
+		return err
+	} else if req.RowsAffected == 0 {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, orderID)
+	}
+}
 
-// 	orderID := ps.ByName("orderID")
-// 	if err := s.db.Model(&order).Where("ID = ?", orderID).Update(order).Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, order)
-// 	}
-// }
+func (api *API) addProductToOrder(c echo.Context) (err error) {
+	tx := api.db.Begin()
 
-// func (s *API) deleteOrder(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	orderID := ps.ByName("orderID")
-// 	req := s.db.Delete(model.Order{}, "ID = ?", orderID)
-// 	if err := req.Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else if req.RowsAffected == 0 {
-// 		http.Error(w, "", http.StatusNotFound)
-// 	} else {
-// 		writeTextResult(w, "ok")
-// 	}
-// }
+	var order model.Order
+	orderID := c.Param("orderID")
+	if err := tx.Preload("Products").First(&order, orderID).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
 
-// func (s *API) addProductToOrder(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	tx := s.db.Begin()
+	const productIDParam = "productID"
+	productID := c.QueryParam(productIDParam)
+	if productID == "" {
+		tx.Rollback()
+		return err
+	}
 
-// 	var order model.Order
-// 	orderID := ps.ByName("orderID")
-// 	if err := tx.Preload("Products").First(&order, orderID).Error; err != nil {
-// 		tx.Rollback()
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
+	var addedProduct model.Product
+	if err := tx.First(&addedProduct, productID).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
 
-// 	const productIDParam = "productID"
-// 	productID := r.URL.Query().Get(productIDParam)
-// 	if productID == "" {
-// 		tx.Rollback()
-// 		writeMissingParamError(w, productIDParam)
-// 		return
-// 	}
+	order.Products = append(order.Products, addedProduct)
+	if err := tx.Save(&order).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
 
-// 	var addedProduct model.Product
-// 	if err := tx.First(&addedProduct, productID).Error; err != nil {
-// 		tx.Rollback()
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
-
-// 	order.Products = append(order.Products, addedProduct)
-// 	if err := tx.Save(&order).Error; err != nil {
-// 		tx.Rollback()
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 		return
-// 	}
-
-// 	if err := tx.Commit().Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else {
-// 		writeJSONResult(w, order)
-// 	}
-// }
-
-// func writeTextResult(w http.ResponseWriter, res string) {
-// 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-// 	w.WriteHeader(http.StatusOK)
-// 	fmt.Fprintln(w, res)
-// }
-
-// func writeJSONResult(w http.ResponseWriter, res interface{}) {
-// 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-// 	w.WriteHeader(http.StatusOK)
-// 	if err := json.NewEncoder(w).Encode(res); err != nil {
-// 		panic(err)
-// 	}
-// }
-
-// func writeMissingParamError(w http.ResponseWriter, paramName string) {
-// 	http.Error(w, fmt.Sprintf("missing query param %q", paramName), http.StatusBadRequest)
-// }
+	if err := tx.Commit().Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, order)
+	}
+}
 
 func errToStatusCode(err error) int {
 	switch err {
