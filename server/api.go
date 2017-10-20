@@ -27,7 +27,7 @@ func (api *API) Bind(group *echo.Group) {
 	group.POST("/customer", api.createCustomer)
 	group.GET("/customer/:customerID", api.getCustomer)
 	group.PUT("/customer/:customerID", api.updateCustomer)
-	// group.DELETE("/customer/:customerID", api.deleteCustomer)
+	group.DELETE("/customer/:customerID", api.deleteCustomer)
 
 	// group.GET("/product", api.getProducts)
 	// group.POST("/product", api.createProduct)
@@ -93,17 +93,17 @@ func (api *API) updateCustomer(c echo.Context) (err error) {
 	}
 }
 
-// func (s *API) deleteCustomer(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-// 	customerID := ps.ByName("customerID")
-// 	req := s.db.Delete(model.Customer{}, "ID = ?", customerID)
-// 	if err := req.Error; err != nil {
-// 		http.Error(w, err.Error(), errToStatusCode(err))
-// 	} else if req.RowsAffected == 0 {
-// 		http.Error(w, "", http.StatusNotFound)
-// 	} else {
-// 		writeTextResult(w, "ok")
-// 	}
-// }
+func (api *API) deleteCustomer(c echo.Context) (err error) {
+	customerID := c.Param("customerID")
+	req := api.db.Delete(model.Customer{}, "ID = ?", customerID)
+	if err := req.Error; err != nil {
+		return err
+	} else if req.RowsAffected == 0 {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, customerID)
+	}
+}
 
 // func (s *API) getProducts(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 // 	var products []model.Product
