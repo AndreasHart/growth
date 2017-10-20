@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/andreashart/newgrow/server/model"
+	"github.com/andreashart/growth/server/model"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"net/http"

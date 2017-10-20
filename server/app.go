@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/andreashart/newgrow/server/model"
+	"github.com/andreashart/growth/server/model"
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
 	"github.com/jinzhu/gorm"
