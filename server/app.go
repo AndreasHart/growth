@@ -16,6 +16,7 @@ import (
 	"net/http"
 )
 
+// Your database String
 var (
 	addr = flag.String("addr", "postgresql://root@localhost:5432/reset?sslmode=disable", "the address of the database")
 )
@@ -39,7 +40,7 @@ func setupDB(addr string) *gorm.DB {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&model.Customer{}, &model.Order{}, &model.Product{})
+	db.AutoMigrate(&model.Customer{}, &model.Order{}, &model.Product{}, &model.User{}, &model.Video{}, &model.Recipe{})
 
 	return db
 }
@@ -70,7 +71,10 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Make an engine
 	engine := echo.New()
-
+	//redirect only to https
+	// engine.Pre(middleware.HTTPSRedirect())
+	//auto add tls support in production
+	// e.AutoTLSManager.Cache = autocert.DirCache("/var/www/.cache")
 	// Use precompiled embedded templates
 	engine.Renderer = NewTemplate()
 

@@ -4,6 +4,7 @@ import (
 	"github.com/andreashart/growth/server/model"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
@@ -28,6 +29,12 @@ func (api *API) Bind(group *echo.Group) {
 	group.GET("/customer/:customerID", api.getCustomer)
 	group.PUT("/customer/:customerID", api.updateCustomer)
 	group.DELETE("/customer/:customerID", api.deleteCustomer)
+
+	group.GET("/user", api.getUsers)
+	group.POST("/user", api.createUser)
+	group.GET("/user/:userID", api.getUser)
+	group.PUT("/user/:userID", api.updateUser)
+	group.DELETE("/user/:userID", api.deleteUser)
 
 	group.GET("/product", api.getProducts)
 	group.POST("/product", api.createProduct)
@@ -105,6 +112,84 @@ func (api *API) deleteCustomer(c echo.Context) (err error) {
 	}
 }
 
+func (api *API) getUsers(c echo.Context) error {
+	var users []model.User
+	if err := api.db.Find(&users).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, users)
+	}
+}
+
+func (api *API) createUser(c echo.Context) (err error) {
+	var users *model.User = new(model.User)
+	email := c.QueryParam("email")
+	if err != nil {
+		return err
+	}
+	hash, err := bcrypt.GenerateFromPassword([]byte(c.Param("password")), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	users.Hash = hash
+	users.Email = &email
+	if err := api.db.Create(&users).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, users)
+	}
+
+}
+
+func (api *API) logIn(c echo.Context) (err error) {
+	var user model.User
+	if err := api.db.Find(&user, c.Param("email")).Error; err != nil {
+		return err
+	} else {
+		password := c.QueryParam("password")
+		if err := bcrypt.CompareHashAndPassword(user.Hash, []byte(password)); err != nil {
+			return err
+		} else {
+			return c.JSON(http.StatusOK, user)
+		}
+
+	}
+}
+
+func (api *API) getUser(c echo.Context) (err error) {
+	var user model.User
+	if err := api.db.Find(&user, c.Param("userID")).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, user)
+	}
+}
+
+func (api *API) updateUser(c echo.Context) (err error) {
+	var user *model.User = new(model.User)
+	if err := c.Bind(user); err != nil {
+		return err
+	}
+
+	userID := c.Param("userID")
+	if err := api.db.Model(&user).Where("ID = ?", userID).Update(user).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, user)
+	}
+}
+
+func (api *API) deleteUser(c echo.Context) (err error) {
+	userID := c.Param("userID")
+	req := api.db.Delete(model.User{}, "ID = ?", userID)
+	if err := req.Error; err != nil {
+		return err
+	} else if req.RowsAffected == 0 {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, userID)
+	}
+}
 func (api *API) getProducts(c echo.Context) error {
 	var products []model.Product
 	if err := api.db.Find(&products).Error; err != nil {
