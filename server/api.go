@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/andreashart/growth/server/model"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
@@ -30,6 +31,8 @@ func (api *API) Bind(group *echo.Group) {
 	group.PUT("/customer/:customerID", api.updateCustomer)
 	group.DELETE("/customer/:customerID", api.deleteCustomer)
 
+	group.GET("/login", api.login)
+	group.GET("/logout", api.logout)
 	group.GET("/user", api.getUsers)
 	group.POST("/user", api.createUser)
 	group.GET("/user/:userID", api.getUser)
@@ -55,6 +58,7 @@ func (api *API) ConfHandler(c echo.Context) error {
 	app := c.Get("app").(*App)
 	return c.JSON(200, app.Conf.Root)
 }
+
 func (api *API) getCustomers(c echo.Context) error {
 	var customers []model.Customer
 	if err := api.db.Find(&customers).Error; err != nil {
@@ -112,6 +116,33 @@ func (api *API) deleteCustomer(c echo.Context) (err error) {
 	}
 }
 
+func CheckPasswordHash(password string, hash []byte) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
+func (api *API) login(c echo.Context) error {
+	var user *model.User = new(model.User)
+	email := c.FormValue("email")
+	password := c.FormValue("password")
+	if err := api.db.Model(&user).Where("Email = ?", email).Error; err != nil {
+		return err
+	} else {
+		match := CheckPasswordHash(password, user.Hash)
+		fmt.Println("Match:   ", match)
+		return c.JSON(http.StatusOK, user)
+	}
+}
+func (api *API) logout(c echo.Context) error {
+	var user *model.User = new(model.User)
+	email := c.FormValue("email")
+	//delete session
+	if err := api.db.Model(&user).Where("Email = ?", email).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, user)
+	}
+}
 func (api *API) getUsers(c echo.Context) error {
 	var users []model.User
 	if err := api.db.Find(&users).Error; err != nil {
@@ -127,7 +158,7 @@ func (api *API) createUser(c echo.Context) (err error) {
 	if err != nil {
 		return err
 	}
-	hash, err := bcrypt.GenerateFromPassword([]byte(c.Param("password")), bcrypt.DefaultCost)
+	hash, err := bcrypt.GenerateFromPassword([]byte(c.FormValue("password")), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
