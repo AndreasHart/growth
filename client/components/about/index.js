@@ -4,29 +4,21 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { banner, p, link } from './styles';
 import { updateName } from '../../actions.js'
-class Homepage extends Component {
-  /*eslint-disable */
-  static onEnter({store, nextState, replaceState, callback}) {
-    // Load here any data.
-
-    callback(); // this call is important, don't forget it
-  }
+class About extends Component {
   /*eslint-enable */
-  handleDomething = (e) => {
-    this.props.doSomething();
-  }
   render() {
     return <div>
       <Helmet
-        title='Home page'
+        title='About'
         meta={[
           {
             property: 'og:title',
             content: 'NewGrowth.io'
           }
         ]} />
+      <h1>About Growth</h1>
       <p className={p}>
-        Please take a look at <Link className={link} to='/docs'>usage</Link> page.
+       Aboot things
       </p>
     </div>;
   }
@@ -34,4 +26,4 @@ class Homepage extends Component {
 }
 
 
-export default connect(store => ({ user: store.user }), {doSomething:updateName})(Homepage);
+export default connect(store => ({ user: store.user }), {doSomething:updateName})(About);

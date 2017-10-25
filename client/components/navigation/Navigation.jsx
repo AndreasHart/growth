@@ -22,11 +22,11 @@ export default class Homepage extends Component {
           }
         ]} />
       <div className={header}>
-        <div className={itemBigger} >Logo.</div>
-        <div className={item} >About.</div>
-        <div className={item} >Videos.</div>
-        <div className={item} >Eats.</div>
-        <div className={item} >Team.</div>
+        <Link to="/" className={itemBigger} >Logo.</Link>
+        <Link to="/about" className={item} >About.</Link>
+        <Link to="/about" className={item} >Videos.</Link>
+        <Link to="/about" className={item} >Eats.</Link>
+        <Link to="/about" className={item} >Team.</Link>
       </div>
     </div>;
   }

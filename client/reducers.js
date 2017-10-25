@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_CONFIG, UPDATE_NAME } from './actions';
+import { SET_CONFIG, UPDATE_NAME, LOG_IN, LOG_OUT } from './actions';
 
 function config(state = {}, action) {
   switch (action.type) {

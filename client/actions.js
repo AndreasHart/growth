@@ -4,6 +4,8 @@
 
 export const SET_CONFIG = 'SET_CONFIG';
 export const UPDATE_NAME = 'UPDATE_NAME';
+export const LOG_IN = 'LOG_IN';
+export const LOG_OUT = 'LOG_OUT';
 /**
  * action creators
  */

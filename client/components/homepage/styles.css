@@ -30,7 +30,13 @@
 .p {
   color: $mainColor;
 }
-
+.banner {
+  position: absolute;
+  display: flex;
+  top:100px;
+  width:100%;
+  overflow: hidden;
+}
 .button {
   margin-top: px(50);
   width: px(50);
