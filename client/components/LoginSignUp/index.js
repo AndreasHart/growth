@@ -2,39 +2,41 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { IndexLink } from 'react-router';
-import { usage, todo } from './styles';
-import { example, p, link } from '../homepage/styles';
-import { setConfig } from '../../actions';
+import { inputBox, input, box } from './styles';
+import { toggleLoginSignup } from '../../actions';
 
-class Usage extends Component {
-
-  /*eslint-disable */
-  static onEnter({store, nextState, replaceState, callback}) {
-    fetch('/api/v2/conf').then((r) => {
-      return r.json();
-    }).then((conf) => {
-      store.dispatch(setConfig(conf));
-      console.log('Faked connection latency! Please, take a look ---> `server/api.go:22`');
-      callback();
-    });
+class LoginSignUp extends Component {
+   constructor(props) {
+    super(props);
+    this.state = {
+      loginOrSignUp:true
+    }
   }
-  /*eslint-enable */
-
+  handleToggleLogin = () => {
+    this.props.toggleLoginSignup()
+  }
   render() {
-    return <div className={usage}>
+    const { loginOrSignUp } = this.props;
+    if(loginOrSignUp){
+      return <div className={box} >
       <Helmet title='Login' />
-      <h2 className={example}>SignUp:</h2>
-
-      <div className={p}>
-        <span className={todo}>// TODO: write an article</span>
-        <pre className={todo}>config:
-          {JSON.stringify(this.props.config, null, 2)}</pre>
+      <h2 >Login</h2>
+      <div>No account? <a onClick={this.handleToggleLogin} >SignUp</a></div>
+      <div className={inputBox}>
+        <input className={input} type='text' placeholder={'Email'} />
+        <input className={input} type='password' placeholder={'Password'} />
       </div>
-      <br />
-      go <IndexLink to='/' className={link}>home</IndexLink>
     </div>;
+  } else {
+    return <div >
+      <Helmet title='SignUp' />
+      <h2 >Sign Up</h2>
+      <div>Have account? <a onClick={this.handleToggleLogin} >Login</a></div>
+    </div>;
+
+  }
   }
 
 }
 
-export default connect(store => ({ config: store.config }))(Usage);
+export default connect(store => ({ loginOrSignUp: store.login.loginOrSignUp }),{ toggleLoginSignup })(LoginSignUp);

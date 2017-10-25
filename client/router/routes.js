@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 import App from '#app/components/app';
 import Homepage from '#app/components/homepage';
+import LoginSignUp from '#app/components/LoginSignUp';
 import About from '#app/components/about';
 import Usage from '#app/components/usage';
 import NotFound from '#app/components/not-found';
@@ -29,7 +30,7 @@ export default ({store, first}) => {
   return <Route path="/" component={App}>
     <IndexRoute component={Homepage} onEnter={w(Homepage.onEnter)}/>
     <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
-    <Route path="/about" component={About} />
+    <Route path="/login" component={LoginSignUp} />
     {/* Server redirect in action */}
     <Redirect from="/docs" to="/usage" />
     <Route path="*" component={NotFound} onEnter={w(NotFound.onEnter)}/>
