@@ -9,7 +9,8 @@ function config(state = {}, action) {
     return state;
   }
 }
-function user(state = 'Andreas', action) {
+
+function userName(state = '', action) {
   switch (action.type) {
   case UPDATE_NAME:
     return action.name;
@@ -17,6 +18,22 @@ function user(state = 'Andreas', action) {
     return state;
   }
 }
+
+function loggedIn(state = false, action) {
+  switch (action.type) {
+  case LOG_IN:
+    return true;
+  case LOG_OUT:
+    return false;
+  default:
+    return state;
+  }
+}
+
+const user = combineReducers({
+  userName,
+  loggedIn
+})
 
 export default combineReducers({
     config,

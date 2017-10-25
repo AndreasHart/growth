@@ -13,7 +13,7 @@ class Homepage extends Component {
   }
   /*eslint-enable */
   handleDomething = (e) => {
-    this.props.doSomething('Dre')
+    this.props.doSomething();
   }
   render() {
     return <div>
@@ -26,7 +26,7 @@ class Homepage extends Component {
           }
         ]} />
       <div onClick={this.handleDomething} className={banner}>
-      hi {this.props.user}
+      hi
       </div>
       <p className={p}>
         Please take a look at <Link className={link} to='/docs'>usage</Link> page.
