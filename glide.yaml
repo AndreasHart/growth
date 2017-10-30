@@ -1,4 +1,4 @@
-package: github.com/olebedev/go-starter-kit
+package: github.com/andreashart/growth
 import:
 - package: github.com/codegangsta/cli
 - package: github.com/dop251/goja
@@ -18,3 +18,10 @@ import:
   - fetch
 - package: github.com/olebedev/on
 - package: github.com/jteeuwen/go-bindata
+- package: github.com/jinzhu/gorm
+  version: v1.0
+  subpackages:
+  - dialects/postgres
+- package: golang.org/x/crypto
+  subpackages:
+  - bcrypt
