@@ -25,10 +25,9 @@ export default class Homepage extends Component {
         <Link to="/" className={itemBigger} >Logo.</Link>
         <Link to="/about" className={item} >About.</Link>
         <Link to="/about" className={item} >Videos.</Link>
-        <Link to="/about" className={item} >Eats.</Link>
-        <Link to="/about" className={item} >Team.</Link>
+        <Link to="/eats" className={item} >Eats.</Link>
+        <Link to="/team" className={item} >Team.</Link>
         <Link to="/login" className={item} >Login.</Link>
-
       </div>
     </div>;
   }

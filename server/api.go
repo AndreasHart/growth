@@ -126,11 +126,15 @@ func (api *API) login(c echo.Context) error {
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 	if err := api.db.Model(&user).Where("Email = ?", email).Error; err != nil {
-		return err
+		return c.String(http.StatusUnauthorized, "Incorrect Password or Email ")
 	} else {
 		match := CheckPasswordHash(password, user.Hash)
 		fmt.Println("Match:   ", match)
-		return c.JSON(http.StatusOK, user)
+		if match {
+			return c.JSON(http.StatusOK, user)
+		} else {
+			return c.String(http.StatusUnauthorized, "Incorrect Password or Email ")
+		}
 	}
 }
 func (api *API) logout(c echo.Context) error {

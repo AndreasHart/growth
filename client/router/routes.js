@@ -4,6 +4,8 @@ import App from '#app/components/app';
 import Homepage from '#app/components/homepage';
 import LoginSignUp from '#app/components/LoginSignUp';
 import About from '#app/components/about';
+import Team from '#app/components/team';
+import Eats from '#app/components/eats';
 import Usage from '#app/components/usage';
 import NotFound from '#app/components/not-found';
 
@@ -31,6 +33,10 @@ export default ({store, first}) => {
     <IndexRoute component={Homepage} onEnter={w(Homepage.onEnter)}/>
     <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
     <Route path="/login" component={LoginSignUp} />
+    <Route path="/about" component={About} />
+    <Route path="/eats" component={Eats} />
+    <Route path="/team" component={Team} />
+    <Route path="/video" component={Video} />
     {/* Server redirect in action */}
     <Redirect from="/docs" to="/usage" />
     <Route path="*" component={NotFound} onEnter={w(NotFound.onEnter)}/>
