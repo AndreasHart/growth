@@ -7,6 +7,7 @@ import About from '#app/components/about';
 import Team from '#app/components/team';
 import Eats from '#app/components/eats';
 import Usage from '#app/components/usage';
+import Video from '#app/components/video';
 import NotFound from '#app/components/not-found';
 
 /**
