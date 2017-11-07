@@ -159,7 +159,15 @@ func (api *API) getUsers(c echo.Context) error {
 
 func (api *API) createUser(c echo.Context) (err error) {
 	var users *model.User = new(model.User)
-	email := c.QueryParam("email")
+	u := new(model.User)
+	if err = c.Bind(u); err != nil {
+		return err
+	}
+	email := c.Param("email")
+	name := c.Param("name")
+	fmt.Printf("%v /n", *c.Request)
+	fmt.Printf("%i /n", *u.Name)
+	fmt.Printf("%v /n", *u.Email)
 	if err != nil {
 		return err
 	}
@@ -169,6 +177,7 @@ func (api *API) createUser(c echo.Context) (err error) {
 	}
 	users.Hash = hash
 	users.Email = &email
+	users.Name = &name
 	if err := api.db.Create(&users).Error; err != nil {
 		return err
 	} else {

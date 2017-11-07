@@ -17,11 +17,11 @@ class LoginSignUp extends Component {
     this.props.toggleLoginSignup()
   }
   handleSignUp = (e) => {
-    const email = e.target.parentElement.parentElement.children[1].children[0].value;
-    const password = e.target.parentElement.parentElement.children[1].children[1].value;
-    const passwordConfirm = e.target.parentElement.parentElement.children[1].children[2].value;
-    debugger;
-    this.props.signUp(email, password, passwordConfirm);
+    const name = e.target.parentElement.parentElement.children[1].children[0].value;
+    const email = e.target.parentElement.parentElement.children[1].children[1].value;
+    const password = e.target.parentElement.parentElement.children[1].children[2].value;
+    const passwordConfirm = e.target.parentElement.parentElement.children[1].children[3].value;
+    this.props.signUp(name, email, password, passwordConfirm);
   }
   render() {
     const { loginOrSignUp } = this.props;
@@ -50,6 +50,7 @@ class LoginSignUp extends Component {
           <div>Have account? <a onClick={this.handleToggleLogin} >Login</a></div>
         </div>
         <div className={inputBox}>
+          <input className={input} type='text' placeholder={'Name'} />
           <input className={input} type='text' placeholder={'Email'} />
           <input className={input} type='password' placeholder={'Password'} />
           <input className={input} type='password' placeholder={'Password Again Pls'} />

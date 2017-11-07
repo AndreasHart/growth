@@ -41,7 +41,7 @@ export function updateName(name) {
   return { type: UPDATE_NAME, name };
 }
 
-export function signUp(email, password, passwordConfirm) {
+export function signUp(name, email, password, passwordConfirm) {
   return(dispatch, getState) => {
     fetch('/api/user', {
       method: 'POST',
@@ -49,8 +49,9 @@ export function signUp(email, password, passwordConfirm) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        'email': 'email',
-        'pasword': 'password'
+        'name': name,
+        'email': email,
+        'pasword': password
       })
     })
     .then(checkStatus)
