@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { banner, p, link } from './styles';
-import { updateName } from '../../actions.js'
+import { updateName } from '../../actions/user'
 class About extends Component {
   /*eslint-enable */
   render() {

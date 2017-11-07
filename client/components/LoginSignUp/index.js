@@ -3,17 +3,25 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { IndexLink } from 'react-router';
 import { inputBox, buttonBox, input, title, box, button, titleBox } from './styles';
-import { toggleLoginSignup } from '../../actions';
+import { toggleLoginSignup, signUp } from '../../actions/user';
 
 class LoginSignUp extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      loginOrSignUp:true
+      loginOrSignUp:true,
     }
+    this.handleSignUp=this.handleSignUp.bind(this)
   }
   handleToggleLogin = () => {
     this.props.toggleLoginSignup()
+  }
+  handleSignUp = (e) => {
+    const email = e.target.parentElement.parentElement.children[1].children[0].value;
+    const password = e.target.parentElement.parentElement.children[1].children[1].value;
+    const passwordConfirm = e.target.parentElement.parentElement.children[1].children[2].value;
+    debugger;
+    this.props.signUp(email, password, passwordConfirm);
   }
   render() {
     const { loginOrSignUp } = this.props;
@@ -46,8 +54,8 @@ class LoginSignUp extends Component {
           <input className={input} type='password' placeholder={'Password'} />
           <input className={input} type='password' placeholder={'Password Again Pls'} />
         </div>
-        <div className={buttonBox}>
-          <a className={button} >Sign Up</a>
+        <div onClick={this.handleSignUp} className={buttonBox}>
+          <a className={button}  >Sign Up</a>
         </div>
       </div>);
 
@@ -56,4 +64,4 @@ class LoginSignUp extends Component {
 
 }
 
-export default connect(store => ({ loginOrSignUp: store.login.loginOrSignUp }),{ toggleLoginSignup })(LoginSignUp);
+export default connect(store => ({ loginOrSignUp: store.login.loginOrSignUp }),{ toggleLoginSignup, signUp})(LoginSignUp);

@@ -69,6 +69,7 @@ func (api *API) getCustomers(c echo.Context) error {
 }
 
 func (api *API) createCustomer(c echo.Context) (err error) {
+	fmt.Println("print me")
 	var customers *model.Customer = new(model.Customer)
 	if err := c.Bind(customers); err != nil {
 		return err
