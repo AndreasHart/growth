@@ -193,7 +193,13 @@ func (api *API) login(c echo.Context) (err error) {
 			cookie.Value = strconv.Itoa(user.ID)
 			cookie.Expires = time.Now().Add(24 * time.Hour)
 			c.SetCookie(cookie)
-			return c.JSON(http.StatusOK, user.ID)
+			type Data struct {
+				ID    int
+				Roles []string
+			}
+			arr := []string{"nothing"}
+			d := Data{user.ID, arr}
+			return c.JSON(http.StatusOK, d)
 		}
 
 	}

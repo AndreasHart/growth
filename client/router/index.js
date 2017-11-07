@@ -23,7 +23,7 @@ export function run() {
     saveState({
       user: store.getState().user,
     });
-  }, 1000));
+  }, 500));
 
   setAsCurrentStore(store);
 
