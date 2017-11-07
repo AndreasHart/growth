@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { header, example, p, link, item, itemBigger } from './styles';
+import { logout } from '../../actions/user'
+class Navigation extends Component {
+  constructor(props) {
+    super(props);
 
-export default class Homepage extends Component {
-  /*eslint-disable */
-  static onEnter({store, nextState, replaceState, callback}) {
-    // Load here any data.
-    callback(); // this call is important, don't forget it
   }
-  /*eslint-enable */
 
+  handleLogout = () => {
+    this.props.logout()
+  }
   render() {
     return <div>
       <Helmet
@@ -27,9 +29,11 @@ export default class Homepage extends Component {
         <Link to="/about" className={item} >Videos.</Link>
         <Link to="/eats" className={item} >Eats.</Link>
         <Link to="/team" className={item} >Team.</Link>
-        <Link to="/login" className={item} >Login.</Link>
+        {this.props.loggedIn ? <a className={item} onClick={this.handleLogout} >Logout.</a> :<Link to="/login" className={item} >Login.</Link>}
       </div>
     </div>;
   }
 
 }
+
+export default connect(store => ({ loggedIn: store.user.loggedIn }),{ logout })(Navigation);

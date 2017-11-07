@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { IndexLink } from 'react-router';
 import { inputBox, buttonBox, input, title, box, button, titleBox } from './styles';
-import { toggleLoginSignup, signUp } from '../../actions/user';
+import { toggleLoginSignup, signUp, login } from '../../actions/user';
 
 class LoginSignUp extends Component {
    constructor(props) {
@@ -23,6 +23,11 @@ class LoginSignUp extends Component {
     const passwordConfirm = e.target.parentElement.parentElement.children[1].children[3].value;
     this.props.signUp(name, email, password, passwordConfirm);
   }
+  handleLogIn = (e) => {
+    const email = e.target.parentElement.parentElement.children[1].children[0].value;
+    const password = e.target.parentElement.parentElement.children[1].children[1].value;
+    this.props.login(email, password);
+  }
   render() {
     const { loginOrSignUp } = this.props;
     if(loginOrSignUp){
@@ -38,7 +43,7 @@ class LoginSignUp extends Component {
             <input className={input} type='password' placeholder={'Password'} />
           </div>
           <div className={buttonBox}>
-            <a className={button} >Login</a>
+            <a className={button} onClick={this.handleLogIn} >Login</a>
           </div>
         </div>)
   } else {
@@ -65,4 +70,4 @@ class LoginSignUp extends Component {
 
 }
 
-export default connect(store => ({ loginOrSignUp: store.login.loginOrSignUp }),{ toggleLoginSignup, signUp})(LoginSignUp);
+export default connect(store => ({ loginOrSignUp: store.login.loginOrSignUp }),{ toggleLoginSignup, signUp, login})(LoginSignUp);

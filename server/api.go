@@ -31,8 +31,8 @@ func (api *API) Bind(group *echo.Group) {
 	group.PUT("/customer/:customerID", api.updateCustomer)
 	group.DELETE("/customer/:customerID", api.deleteCustomer)
 
-	group.GET("/login", api.login)
-	group.GET("/logout", api.logout)
+	group.POST("/login", api.login)
+	group.DELETE("/logout", api.logout)
 	group.GET("/user", api.getUsers)
 	group.POST("/user", api.createUser)
 	group.GET("/user/:userID", api.getUser)
@@ -122,31 +122,9 @@ func CheckPasswordHash(password string, hash []byte) bool {
 	return err == nil
 }
 
-func (api *API) login(c echo.Context) error {
-	var user *model.User = new(model.User)
-	email := c.FormValue("email")
-	password := c.FormValue("password")
-	if err := api.db.Model(&user).Where("Email = ?", email).Error; err != nil {
-		return c.String(http.StatusUnauthorized, "Incorrect Password or Email ")
-	} else {
-		match := CheckPasswordHash(password, user.Hash)
-		fmt.Println("Match:   ", match)
-		if match {
-			return c.JSON(http.StatusOK, user)
-		} else {
-			return c.String(http.StatusUnauthorized, "Incorrect Password or Email ")
-		}
-	}
-}
 func (api *API) logout(c echo.Context) error {
-	var user *model.User = new(model.User)
-	email := c.FormValue("email")
-	//delete session
-	if err := api.db.Model(&user).Where("Email = ?", email).Error; err != nil {
-		return err
-	} else {
-		return c.JSON(http.StatusOK, user)
-	}
+	// TODO delete session
+	return c.String(http.StatusOK, "Successfull logged out")
 }
 func (api *API) getUsers(c echo.Context) error {
 	var users []model.User
@@ -171,14 +149,13 @@ func (api *API) createUser(c echo.Context) (err error) {
 
 	fmt.Printf("%+v /n", u)
 	fmt.Printf("%v /n", *u.Email)
-	fmt.Printf("%v /n", *u.Name)
 	fmt.Printf("%v /n", *u.Password)
 	if err != nil {
 		return err
 	}
 	password := []byte(*u.Password)
 	println("%v", password)
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
@@ -193,13 +170,26 @@ func (api *API) createUser(c echo.Context) (err error) {
 
 }
 
-func (api *API) logIn(c echo.Context) (err error) {
+func (api *API) login(c echo.Context) (err error) {
 	var user model.User
-	if err := api.db.Find(&user, c.Param("email")).Error; err != nil {
+	type LogInAtempt struct {
+		Email    *string `json:"email" gorm:"not null" query:"email"`
+		Password *string `json:"password" gorm:"not null"`
+	}
+	u := new(LogInAtempt)
+	if err = c.Bind(u); err != nil {
+		return err
+	}
+
+	fmt.Printf("%v /n", *u.Email)
+	fmt.Printf("%v /n", *u.Password)
+
+	if err := api.db.Where("email = ?", *u.Email).Find(&user).Error; err != nil {
 		return err
 	} else {
-		password := c.QueryParam("password")
-		if err := bcrypt.CompareHashAndPassword(user.Hash, []byte(password)); err != nil {
+		password := []byte(*u.Password)
+		println("%v passowrd", password)
+		if err := bcrypt.CompareHashAndPassword(user.Hash, password); err != nil {
 			return err
 		} else {
 			return c.JSON(http.StatusOK, user)

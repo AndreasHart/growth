@@ -1,16 +1,28 @@
-hash: 7c85079a19d34f3a8e690a4511597cb76d7e152af658b559644a9e08b32ac3dc
-updated: 2017-11-07T12:11:21.702725102-04:00
+hash: 13e1cf8694537b03df8eeaf0f8b368e9d3e58d6f2f987b9e811621352c16a60e
+updated: 2017-11-07T12:12:50.618349209-04:00
 imports:
 - name: github.com/codegangsta/cli
   version: 7bc6a0acffa589f415f88aca16cc1de5ffd66f9c
+- name: github.com/dgrijalva/jwt-go
+  version: dbeaa9332f19a944acb5736b4456cfcc02140e29
 - name: github.com/dlclark/regexp2
   version: 487489b64fb796de2e55f4e8a4ad1e145f80e957
+  subpackages:
+  - syntax
 - name: github.com/dop251/goja
   version: 0aeff7545edfeafa4535f10f7fa4970c230915e8
+  subpackages:
+  - ast
+  - file
+  - parser
+  - token
 - name: github.com/dop251/goja_nodejs
   version: adff31b136e6b7e044712aab7236a775e1bd085e
   subpackages:
+  - console
   - eventloop
+  - require
+  - util
 - name: github.com/elazarl/go-bindata-assetfs
   version: 30f82fa23fd844bd5bb1e5f216db87fd77b5eb43
 - name: github.com/fatih/structs
@@ -21,12 +33,30 @@ imports:
   version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
   subpackages:
   - dialects/postgres
+- name: github.com/jinzhu/inflection
+  version: 1c35d901db3da928c72a72d8458480cc9ade058f
 - name: github.com/jteeuwen/go-bindata
   version: a0ff2567cfb70903282db057e799fd826784d41d
 - name: github.com/labstack/echo
   version: b28538b2e3f5446fe6e0e47ee34cd74b662ca2ab
   subpackages:
   - middleware
+- name: github.com/labstack/gommon
+  version: 57409ada9da0f2afad6664c49502f8c50fbd8476
+  subpackages:
+  - bytes
+  - color
+  - log
+  - random
+- name: github.com/lib/pq
+  version: b609790bd85edf8e9ab7e0f8912750a786177bcf
+  subpackages:
+  - hstore
+  - oid
+- name: github.com/mattn/go-colorable
+  version: ad5389df28cdac544c99bd7b9161a0b5b6ca9d1b
+- name: github.com/mattn/go-isatty
+  version: a5cdd64afdee435007ee3e9f6ed4684af949d568
 - name: github.com/nu7hatch/gouuid
   version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 - name: github.com/olebedev/config
@@ -35,12 +65,39 @@ imports:
   version: bb153be84336f26925890502929cc363477df7ad
   subpackages:
   - fetch
+  - fetch/internal/data
 - name: github.com/olebedev/on
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
+- name: github.com/pkg/errors
+  version: f15c970de5b76fac0b59abb32d62c17cc7bed265
 - name: github.com/qor/validations
   version: 87c1296c75e72a8f3247beab65c48c50b7b66a7a
+- name: github.com/valyala/bytebufferpool
+  version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
+- name: github.com/valyala/fasttemplate
+  version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
   version: 2509b142fb2b797aa7587dad548f113b2c0f20ce
   subpackages:
+  - acme
+  - acme/autocert
   - bcrypt
+  - blowfish
+- name: golang.org/x/sys
+  version: 661970f62f5897bc0cd5fdca7e087ba8a98a8fa1
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: 6eab0e8f74e86c598ec3b6fad4888e0c11482d48
+  subpackages:
+  - cases
+  - collate
+  - internal
+  - internal/colltab
+  - internal/tag
+  - language
+  - transform
+  - unicode/norm
+- name: gopkg.in/yaml.v2
+  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
 testImports: []

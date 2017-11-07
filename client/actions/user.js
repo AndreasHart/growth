@@ -8,10 +8,9 @@ import { userService } from '../services';
 
 export const SET_CONFIG = 'SET_CONFIG';
 export const UPDATE_NAME = 'UPDATE_NAME';
-export const LOG_IN = 'LOG_IN';
-export const LOG_OUT = 'LOG_OUT';
 export const TOGGLE_LOGIN_SIGNUP = 'TOGGLE_LOGIN_SIGNUP';
-
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -45,6 +44,16 @@ export function updateName(name) {
   return { type: UPDATE_NAME, name };
 }
 
+function loginSucess() {
+  return {
+    type: LOGIN_SUCCESS
+  }
+}
+function logoutSucess() {
+   return {
+    type: LOGOUT_SUCCESS
+  }
+}
 export function signUp(name, email, password, passwordConfirm) {
   return(dispatch, getState) => {
     const data = {
@@ -55,7 +64,35 @@ export function signUp(name, email, password, passwordConfirm) {
     debugger;
     return userService().signUp(data)
       .then((response) => {
-          debugger;
+        debugger;
+      })
+      .catch((err) => {
+        debugger;
+      });
+  }
+}
+
+export function login(email, password) {
+  return(dispatch, getState) => {
+    const data = {
+      email,
+      password
+    };
+    debugger;
+    return userService().login(data)
+      .then((response) => {
+        dispatch(loginSucess())
+      })
+      .catch((err) => {
+        debugger;
+      });
+  }
+}
+export function logout() {
+  return(dispatch, getState) => {
+    return userService().logout()
+      .then((response) => {
+        dispatch(logoutSucess())
       })
       .catch((err) => {
         debugger;

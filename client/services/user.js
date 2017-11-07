@@ -6,7 +6,7 @@ export default () => {
   return {
     login: ({ email, password }) => client.request({
       method: 'POST',
-      url: '/api/sessions',
+      url: '/api/login',
       data: {
         email,
         password
@@ -25,9 +25,9 @@ export default () => {
         password
       }
     }),
-    logOut: () => client.request({
+    logout: () => client.request({
       method: 'DELETE',
-      url: '/api/sessions'
+      url: '/api/logout'
     })
   };
 };

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_CONFIG, UPDATE_NAME, LOG_IN, LOG_OUT, TOGGLE_LOGIN_SIGNUP } from './actions/user';
+import { SET_CONFIG, UPDATE_NAME, LOGIN_SUCCESS, LOGOUT_SUCCESS, TOGGLE_LOGIN_SIGNUP } from './actions/user';
 
 function config(state = {}, action) {
   switch (action.type) {
@@ -21,9 +21,9 @@ function userName(state = '', action) {
 
 function loggedIn(state = false, action) {
   switch (action.type) {
-  case LOG_IN:
+  case LOGIN_SUCCESS:
     return true;
-  case LOG_OUT:
+  case LOGOUT_SUCCESS:
     return false;
   default:
     return state;
