@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"github.com/qor/validations"
 	"html/template"
 	"io"
 	"net/http"
@@ -38,7 +39,7 @@ func setupDB(addr string) *gorm.DB {
 	if err != nil {
 		panic("failed to connect database")
 	}
-
+	validations.RegisterCallbacks(db)
 	// Migrate the schema
 	db.AutoMigrate(&model.Customer{}, &model.Order{}, &model.Product{}, &model.User{}, &model.Video{}, &model.Recipe{})
 

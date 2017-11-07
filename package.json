@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "^6.7.7",
+    "axios": "^0.17.0",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.2",
     "babel-loader": "^6.4.1",
@@ -19,6 +20,7 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.0",
+    "es6-promise": "^4.1.1",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^6.10.3",
     "expose-loader": "^0.7.1",

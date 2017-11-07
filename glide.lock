@@ -1,6 +1,8 @@
-hash: 36b68498fbed9dc761e5e08dd182deb71d57e0d409ac898cffc8e128dfb1eb03
-updated: 2017-10-30T18:44:46.705323528-03:00
+hash: b4f936b5253a6d6f4e71f066accf41d80d9e2b1b1347a8a608339bb156319a35
+updated: 2017-11-07T11:43:41.200259027-04:00
 imports:
+- name: github.com/asaskevich/govalidator
+  version: 73945b6115bfbbcc57d89b7316e28109364124e1
 - name: github.com/codegangsta/cli
   version: 7bc6a0acffa589f415f88aca16cc1de5ffd66f9c
 - name: github.com/dgrijalva/jwt-go
@@ -70,6 +72,8 @@ imports:
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
 - name: github.com/pkg/errors
   version: f15c970de5b76fac0b59abb32d62c17cc7bed265
+- name: github.com/qor/validations
+  version: 87c1296c75e72a8f3247beab65c48c50b7b66a7a
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate

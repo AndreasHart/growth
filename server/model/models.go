@@ -4,8 +4,8 @@ package model
 type User struct {
 	ID    int     `json:"id,omitempty" query:"id"`
 	Name  *string `json:"name" gorm:"not null" query:"name"`
-	Email *string `json:"email" gorm:"not null" query:"email"`
-	Hash  []byte  `json:"hash" gorm:"not null"`
+	Email *string `json:"email" gorm:"not null" query:"email" valid:"email"`
+	Hash  []byte  `json:"hash" gorm:"not null" `
 }
 
 // Customer is a model in the "customers" table.

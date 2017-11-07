@@ -158,26 +158,33 @@ func (api *API) getUsers(c echo.Context) error {
 }
 
 func (api *API) createUser(c echo.Context) (err error) {
-	var users *model.User = new(model.User)
-	u := new(model.User)
+
+	type InitialUser struct {
+		Name     *string `json:"name" gorm:"not null" query:"name"`
+		Email    *string `json:"email" gorm:"not null" query:"email" valid:"email"`
+		Password *string `json:"password" gorm:"not null"`
+	}
+	u := new(InitialUser)
 	if err = c.Bind(u); err != nil {
 		return err
 	}
-	email := c.Param("email")
-	name := c.Param("name")
-	fmt.Printf("%v /n", *c.Request)
-	fmt.Printf("%i /n", *u.Name)
+
+	fmt.Printf("%+v /n", u)
 	fmt.Printf("%v /n", *u.Email)
+	fmt.Printf("%v /n", *u.Name)
+	fmt.Printf("%v /n", *u.Password)
 	if err != nil {
 		return err
 	}
-	hash, err := bcrypt.GenerateFromPassword([]byte(c.FormValue("password")), bcrypt.DefaultCost)
+	password := []byte(*u.Password)
+	println("%v", password)
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
-	users.Hash = hash
-	users.Email = &email
-	users.Name = &name
+
+	users := model.User{0, u.Name, u.Email, hash}
+
 	if err := api.db.Create(&users).Error; err != nil {
 		return err
 	} else {

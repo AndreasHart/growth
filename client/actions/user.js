@@ -1,3 +1,7 @@
+import { userService } from '../services';
+
+
+
 /**
  * action types
  */
@@ -43,23 +47,18 @@ export function updateName(name) {
 
 export function signUp(name, email, password, passwordConfirm) {
   return(dispatch, getState) => {
-    fetch('/api/user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        'name': name,
-        'email': email,
-        'pasword': password
+    const data = {
+      name,
+      email,
+      password
+    };
+    debugger;
+    return userService().signUp(data)
+      .then((response) => {
+          debugger;
       })
-    })
-    .then(checkStatus)
-    .then((data)=>{
-      debugger;
-    })
-    .catch((err) => {
-      debugger;
-    })
+      .catch((err) => {
+        debugger;
+      });
   }
 }
