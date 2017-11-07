@@ -18,6 +18,14 @@ function userName(state = '', action) {
     return state;
   }
 }
+function id(state = null, action) {
+  switch (action.type) {
+  case LOGIN_SUCCESS:
+    return action.id;
+  default:
+    return state;
+  }
+}
 
 function loggedIn(state = false, action) {
   switch (action.type) {
@@ -32,7 +40,8 @@ function loggedIn(state = false, action) {
 
 const user = combineReducers({
   userName,
-  loggedIn
+  loggedIn,
+  id
 })
 
 function loginOrSignUp(state = true, action) {

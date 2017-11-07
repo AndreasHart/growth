@@ -44,9 +44,10 @@ export function updateName(name) {
   return { type: UPDATE_NAME, name };
 }
 
-function loginSucess() {
+function loginSuccess(id) {
   return {
-    type: LOGIN_SUCCESS
+    type: LOGIN_SUCCESS,
+    id
   }
 }
 function logoutSucess() {
@@ -64,7 +65,9 @@ export function signUp(name, email, password, passwordConfirm) {
     debugger;
     return userService().signUp(data)
       .then((response) => {
-        debugger;
+        const { id } = response.data;
+        dispatch(signupSuccess(id))
+
       })
       .catch((err) => {
         debugger;
@@ -81,7 +84,9 @@ export function login(email, password) {
     debugger;
     return userService().login(data)
       .then((response) => {
-        dispatch(loginSucess())
+        debugger;
+        const id = response.data;
+        dispatch(loginSuccess(id))
       })
       .catch((err) => {
         debugger;

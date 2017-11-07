@@ -2,6 +2,7 @@ import { applyMiddleware, createStore as reduxCreateStore, compose } from 'redux
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
+import { loadState, saveState } from './localStorage';
 
 const middlewares = [];
 
@@ -13,9 +14,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export function createStore(state) {
+  const persistedState = loadState();
   return reduxCreateStore(
     reducers,
-    state,
+    persistedState,
     applyMiddleware(thunk, ...middlewares)
   );
 }

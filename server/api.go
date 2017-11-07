@@ -7,6 +7,8 @@ import (
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // API is a defined as struct bundle
@@ -124,6 +126,11 @@ func CheckPasswordHash(password string, hash []byte) bool {
 
 func (api *API) logout(c echo.Context) error {
 	// TODO delete session
+	cookie := new(http.Cookie)
+	cookie.Name = "ID"
+	cookie.Value = ""
+	cookie.Expires = time.Now()
+	c.SetCookie(cookie)
 	return c.String(http.StatusOK, "Successfull logged out")
 }
 func (api *API) getUsers(c echo.Context) error {
@@ -146,15 +153,7 @@ func (api *API) createUser(c echo.Context) (err error) {
 	if err = c.Bind(u); err != nil {
 		return err
 	}
-
-	fmt.Printf("%+v /n", u)
-	fmt.Printf("%v /n", *u.Email)
-	fmt.Printf("%v /n", *u.Password)
-	if err != nil {
-		return err
-	}
 	password := []byte(*u.Password)
-	println("%v", password)
 	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
 	if err != nil {
 		return err
@@ -181,9 +180,6 @@ func (api *API) login(c echo.Context) (err error) {
 		return err
 	}
 
-	fmt.Printf("%v /n", *u.Email)
-	fmt.Printf("%v /n", *u.Password)
-
 	if err := api.db.Where("email = ?", *u.Email).Find(&user).Error; err != nil {
 		return err
 	} else {
@@ -192,7 +188,12 @@ func (api *API) login(c echo.Context) (err error) {
 		if err := bcrypt.CompareHashAndPassword(user.Hash, password); err != nil {
 			return err
 		} else {
-			return c.JSON(http.StatusOK, user)
+			cookie := new(http.Cookie)
+			cookie.Name = "ID"
+			cookie.Value = strconv.Itoa(user.ID)
+			cookie.Expires = time.Now().Add(24 * time.Hour)
+			c.SetCookie(cookie)
+			return c.JSON(http.StatusOK, user.ID)
 		}
 
 	}

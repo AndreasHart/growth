@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import toString from './toString';
 import { Promise } from 'when';
 import createRoutes from './routes';
+import throttle from 'lodash/throttle';
 import { createStore, setAsCurrentStore } from '../store';
+import { loadState, saveState } from '../localStorage';
 
 
 export function run() {
@@ -16,6 +18,13 @@ export function run() {
   require('whatwg-fetch');
 
   const store = createStore(window['--app-initial']);
+
+  store.subscribe(throttle(() => {
+    saveState({
+      user: store.getState().user,
+    });
+  }, 1000));
+
   setAsCurrentStore(store);
 
   render(
