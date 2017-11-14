@@ -1,0 +1,92 @@
+.postBox {
+  border: 1px solid black;
+  width:90%;
+  padding:2%;
+  display: flex;
+  margin:0 auto;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.authorBox {
+  display: flex;
+  width: 80%;
+  justify-content:left;
+  padding:3%;
+}
+.author {
+  font-size: 30px;
+  display: flex;
+}
+.authorinfo {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5%
+}
+.tagline {
+  font-size: 18px;
+  display: flex;
+}
+.circle {
+  height:50px;
+  width:50px;
+  border-radius: 50%
+}
+.input {
+  padding:3%;
+  display: flex;
+  text-align: center;
+  width:100%;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin:0 auto;
+}
+
+.button {
+  display: flex;
+  height: 40px;
+  width:30%;
+  text-align: center;
+  justify-content: center;
+  vertical-align: center;
+  border: 1px solid black;
+  cursor: pointer;
+  line-height: 2;
+}
+
+.button:hover {
+  border: 2px solid black ;
+  text-decoration-line: underline;
+  box-shadow: .5px;
+  background-color: lightgrey;
+  opacity: 25%;
+  transition: 0.3s background-color ease;
+}
+.subtitle {
+  font-size: px(20);
+  color: grey;
+}
+.body {
+  font-size:px(18);
+}
+.buttonBox {
+  display: flex;
+  justify-content: center;
+  padding:2%;
+  text-align: center;
+}
+.titleBox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding:2%;
+  text-align: center;
+}
+.title {
+  font-size: 30px;
+  margin-bottom: 4px;
+}

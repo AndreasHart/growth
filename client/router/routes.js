@@ -9,6 +9,8 @@ import Eats from '#app/components/eats';
 import Usage from '#app/components/usage';
 import Video from '#app/components/video';
 import NotFound from '#app/components/not-found';
+import Blog from '#app/components/blog';
+
 
 /**
  * Returns configured routes for different
@@ -65,7 +67,7 @@ export default ({store, first}) => {
     <Route path="/about" component={About} />
     <Route path="/eats" component={Eats} />
     <Route path="/team" component={Team} />
-    <Route path="/video" component={Video} />
+    <Route path="/blog" component={Blog} />
     {/* Server redirect in action */}
     <Redirect from="/docs" to="/usage" />
     <Route path="*" component={NotFound} />
