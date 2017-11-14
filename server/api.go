@@ -119,11 +119,6 @@ func (api *API) deleteCustomer(c echo.Context) (err error) {
 	}
 }
 
-func CheckPasswordHash(password string, hash []byte) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
-}
-
 func (api *API) logout(c echo.Context) error {
 	// TODO delete session
 	cookie := new(http.Cookie)
@@ -133,7 +128,14 @@ func (api *API) logout(c echo.Context) error {
 	c.SetCookie(cookie)
 	return c.String(http.StatusOK, "Successfull logged out")
 }
+
 func (api *API) getUsers(c echo.Context) error {
+	cookie, err := c.Cookie("ID")
+	if err != nil {
+		return err
+	}
+	fmt.Println(cookie.Name)
+	fmt.Println(cookie.Value)
 	var users []model.User
 	if err := api.db.Find(&users).Error; err != nil {
 		return err
@@ -158,8 +160,8 @@ func (api *API) createUser(c echo.Context) (err error) {
 	if err != nil {
 		return err
 	}
-
-	users := model.User{0, u.Name, u.Email, hash}
+	roles := "user"
+	users := model.User{0, u.Name, u.Email, hash, &roles}
 
 	if err := api.db.Create(&users).Error; err != nil {
 		return err
@@ -195,10 +197,9 @@ func (api *API) login(c echo.Context) (err error) {
 			c.SetCookie(cookie)
 			type Data struct {
 				ID    int
-				Roles []string
+				Roles *string
 			}
-			arr := []string{"nothing"}
-			d := Data{user.ID, arr}
+			d := Data{user.ID, user.Roles}
 			return c.JSON(http.StatusOK, d)
 		}
 

@@ -11,6 +11,7 @@ export const UPDATE_NAME = 'UPDATE_NAME';
 export const TOGGLE_LOGIN_SIGNUP = 'TOGGLE_LOGIN_SIGNUP';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -32,7 +33,6 @@ export function toggleLoginSignup(){
 }
 export function setConfig(config) {
   return(dispatch, getState) => {
-    console.log('state', getState() );
     dispatch({
       type: SET_CONFIG,
       config
@@ -41,13 +41,23 @@ export function setConfig(config) {
 }
 
 export function updateName(name) {
-  return { type: UPDATE_NAME, name };
+  return {
+    type: UPDATE_NAME,
+    name
+  }
 }
-
-function loginSuccess(id) {
+function signupSuccess(id,roles) {
+  return {
+    type: SIGNUP_SUCCESS,
+    id,
+    roles
+  }
+}
+function loginSuccess(id, roles) {
   return {
     type: LOGIN_SUCCESS,
-    id
+    id,
+    roles
   }
 }
 function logoutSucess() {
@@ -62,12 +72,10 @@ export function signUp(name, email, password, passwordConfirm) {
       email,
       password
     };
-    debugger;
     return userService().signUp(data)
       .then((response) => {
-        const { id } = response.data;
-        dispatch(signupSuccess(id))
-
+        const { id, roles } = response.data;
+        dispatch(signupSuccess(id, roles))
       })
       .catch((err) => {
         debugger;
@@ -81,12 +89,10 @@ export function login(email, password) {
       email,
       password
     };
-    debugger;
     return userService().login(data)
       .then((response) => {
-        debugger;
-        const id = response.data;
-        dispatch(loginSuccess(id))
+        const { id, roles} = response.data;
+        dispatch(loginSuccess(id, roles))
       })
       .catch((err) => {
         debugger;

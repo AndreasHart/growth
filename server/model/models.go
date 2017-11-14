@@ -6,6 +6,7 @@ type User struct {
 	Name  *string `json:"name" gorm:"not null" query:"name"`
 	Email *string `json:"email" gorm:"not null" query:"email" valid:"email"`
 	Hash  []byte  `json:"hash" gorm:"not null" `
+	Roles *string `json:"roles"`
 }
 
 // Customer is a model in the "customers" table.
