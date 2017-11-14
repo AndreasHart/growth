@@ -41,7 +41,7 @@ func setupDB(addr string) *gorm.DB {
 	}
 	validations.RegisterCallbacks(db)
 	// Migrate the schema
-	db.AutoMigrate(&model.Customer{}, &model.Order{}, &model.Product{}, &model.User{}, &model.Video{}, &model.Recipe{})
+	db.AutoMigrate(&model.Customer{}, &model.Order{}, &model.Product{}, &model.User{}, &model.Video{}, &model.Recipe{}, &model.BlogPost{})
 
 	return db
 }

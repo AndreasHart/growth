@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
 import { SET_CONFIG, UPDATE_NAME, LOGIN_SUCCESS, LOGOUT_SUCCESS, TOGGLE_LOGIN_SIGNUP } from './actions/user';
 
+import blog from './reducers/blogReducer'
+import login from './reducers/loginReducer'
+
 function config(state = {}, action) {
   switch (action.type) {
   case SET_CONFIG:
@@ -44,19 +47,11 @@ const user = combineReducers({
   id
 })
 
-function loginOrSignUp(state = true, action) {
-  switch (action.type) {
-  case TOGGLE_LOGIN_SIGNUP:
-    return !state;
-  default:
-    return state;
-  }
-}
-const login =  combineReducers({
-  loginOrSignUp
-})
+
+
 export default combineReducers({
     config,
     login,
+    blog,
     user
 });

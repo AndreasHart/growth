@@ -53,6 +53,12 @@ func (api *API) Bind(group *echo.Group) {
 	group.PUT("/order/:orderID", api.updateOrder)
 	group.DELETE("/order/:orderID", api.deleteOrder)
 	group.POST("/order/:orderID/product", api.addProductToOrder)
+
+	group.GET("/blog", api.getBlogPosts)
+	group.POST("/blog", api.createBlogPost)
+	group.GET("/blog/:orderID", api.getBlogPost)
+	group.PUT("/blog/:orderID", api.updateBlogPost)
+	group.DELETE("/blog/:orderID", api.deleteBlogPost)
 }
 
 // ConfHandler handle the app config, for example
@@ -161,7 +167,8 @@ func (api *API) createUser(c echo.Context) (err error) {
 		return err
 	}
 	roles := "user"
-	users := model.User{0, u.Name, u.Email, hash, &roles}
+	posts := new([]model.BlogPost)
+	users := model.User{0, u.Name, u.Email, hash, &roles, *posts}
 
 	if err := api.db.Create(&users).Error; err != nil {
 		return err
@@ -387,6 +394,63 @@ func (api *API) addProductToOrder(c echo.Context) (err error) {
 		return err
 	} else {
 		return c.JSON(http.StatusOK, order)
+	}
+}
+
+func (api *API) getBlogPosts(c echo.Context) error {
+	var blogPosts []model.BlogPost
+	if err := api.db.Find(&blogPosts).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, blogPosts)
+	}
+}
+
+func (api *API) createBlogPost(c echo.Context) (err error) {
+	var blogPosts *model.BlogPost = new(model.BlogPost)
+	if err := c.Bind(blogPosts); err != nil {
+		return err
+	}
+	if err := api.db.Create(&blogPosts).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, blogPosts)
+	}
+
+}
+
+func (api *API) getBlogPost(c echo.Context) (err error) {
+	var blogPost model.BlogPost
+	if err := api.db.Find(&blogPost, c.Param("blogPostID")).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, blogPost)
+	}
+}
+
+func (api *API) updateBlogPost(c echo.Context) (err error) {
+	var blogPost *model.BlogPost = new(model.BlogPost)
+	if err := c.Bind(blogPost); err != nil {
+		return err
+	}
+
+	blogPostID := c.Param("blogPostID")
+	if err := api.db.Model(&blogPost).Where("ID = ?", blogPostID).Update(blogPost).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, blogPost)
+	}
+}
+
+func (api *API) deleteBlogPost(c echo.Context) (err error) {
+	blogPostID := c.Param("blogPostID")
+	req := api.db.Delete(model.BlogPost{}, "ID = ?", blogPostID)
+	if err := req.Error; err != nil {
+		return err
+	} else if req.RowsAffected == 0 {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, blogPostID)
 	}
 }
 
