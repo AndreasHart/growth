@@ -34,6 +34,7 @@ func (api *API) Bind(group *echo.Group) {
 	group.DELETE("/customer/:customerID", api.deleteCustomer)
 
 	group.POST("/login", api.login)
+	group.GET("/session", api.session)
 	group.DELETE("/logout", api.logout)
 	group.GET("/user", api.getUsers)
 	group.POST("/user", api.createUser)
@@ -212,7 +213,15 @@ func (api *API) login(c echo.Context) (err error) {
 
 	}
 }
+func (api *API) session(c echo.Context) (err error) {
+	cookie, _ := c.Cookie("ID")
+	if cookie != nil {
+		return c.String(http.StatusOK, "Session Still gooood")
+	} else {
+		return c.String(http.StatusUnauthorized, "need to log in again")
+	}
 
+}
 func (api *API) getUser(c echo.Context) (err error) {
 	var user model.User
 	if err := api.db.Find(&user, c.Param("userID")).Error; err != nil {

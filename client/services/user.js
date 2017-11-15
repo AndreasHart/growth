@@ -4,6 +4,10 @@ import createRestApiClient from '../utils/createRestApi';
 export default () => {
   const client = createRestApiClient().withConfig({ baseURL: '' });
   return {
+    check: () => client.request({
+      method: 'get',
+      url: '/api/session'
+    }),
     login: ({ email, password }) => client.request({
       method: 'POST',
       url: '/api/login',

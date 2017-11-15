@@ -8,7 +8,7 @@ export function getPosts() {
   return(dispatch, getState) => {
     return blogService().getBlogPosts()
       .then((response) => {
-        debugger;
+        console.log('good to go');
       })
       .catch((err) => {
         debugger;

@@ -111,3 +111,14 @@ export function logout() {
       });
   }
 }
+export function check() {
+  return(dispatch, getState) => {
+    return userService().logout()
+      .then((response) => {
+       debugger;
+      })
+      .catch((err) => {
+        debugger;
+      });
+  }
+}

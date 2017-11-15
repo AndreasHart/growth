@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import { IndexLink } from 'react-router';
 import { postBox, buttonBox, input, title, box, button, titleBox, subtitle, body, circle, authorBox, author,authorinfo, tagline, date } from './styles';
 import { getPosts, showNewPost } from '../../actions/blog';
+import { check } from '../../actions/user';
 
 class Blog extends Component {
    constructor(props) {
@@ -11,7 +12,8 @@ class Blog extends Component {
     this.handleSignUp=this.handleSignUp.bind(this)
   }
   componentDidMount = () => {
-   this.props.getPosts()
+    this.props.check();
+   this.props.getPosts();
   }
   handleToggleLogin = () => {
     this.props.toggleLoginSignup()
@@ -113,4 +115,4 @@ export default connect(store => ({
   loggedIn: store.user.loggedIn,
   showNewBlogPost: store.blog.showNewBlogPost
 }),
-{ getPosts, showNewPost })(Blog);
+{ getPosts, showNewPost, check })(Blog);
