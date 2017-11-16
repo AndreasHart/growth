@@ -1,48 +1,31 @@
-.postBox {
+.newPostBox {
   border: 1px solid black;
-  width:90%;
-  padding:2%;
+  width:50%;
   display: flex;
   margin:0 auto;
   flex-direction: column;
   justify-content: center;
+  vertical-align: center;
   text-align: center;
 }
-.authorBox {
-  display: flex;
-  width: 80%;
-  justify-content:left;
-  padding:3%;
-}
-.author {
-  font-size: 30px;
-  display: flex;
-}
-.authorinfo {
+.post {
   display: flex;
   flex-direction: column;
-  padding-left: 5%
-}
-.tagline {
-  font-size: 18px;
-  display: flex;
-}
-.circle {
-  height:50px;
-  width:50px;
-  border-radius: 50%
+  width:100%;
+  height:300px;
+  border:2px solid black;
+  text-align: center;
+  justify-content: center;
+  margin:0 auto;
+  vertical-align: center;
 }
 .input {
   padding:3%;
   display: flex;
   text-align: center;
-  border:2px solid black;
-  height:150px;
   width:100%;
 }
-.inputFile {
-  display: none;
-}
+
 .box {
   display: flex;
   flex-direction: column;
@@ -57,26 +40,24 @@
   text-align: center;
   justify-content: center;
   vertical-align: center;
-  border: 1px solid black;
+  border: 2px solid deepskyblue;
   cursor: pointer;
+  background-color: black;
+  color:white;
   line-height: 2;
+  border-radius: 10%;
 }
 
 .button:hover {
   border: 2px solid black ;
   text-decoration-line: underline;
   box-shadow: .5px;
-  background-color: lightgrey;
+  background-color: lightblue;
   opacity: 25%;
+  color:black;
   transition: 0.3s background-color ease;
 }
-.subtitle {
-  font-size: px(20);
-  color: grey;
-}
-.body {
-  font-size:px(18);
-}
+
 .buttonBox {
   display: flex;
   justify-content: center;

@@ -26,8 +26,6 @@ class Navigation extends Component {
       <div className={header}>
         <Link to="/" className={itemBigger} >Logo.</Link>
         <Link to="/about" className={item} >About.</Link>
-        <Link to="/about" className={item} >Videos.</Link>
-        <Link to="/eats" className={item} >Eats.</Link>
         <Link to="/team" className={item} >Team.</Link>
         {this.props.loggedIn ? <a className={item} onClick={this.handleLogout} >Logout.</a> :<Link to="/login" className={item} >Login.</Link>}
       </div>

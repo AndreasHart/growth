@@ -1,48 +1,21 @@
-.postBox {
+.choiceBox {
   border: 1px solid black;
-  width:90%;
-  padding:2%;
+  width:100%;
+  height:200px;
   display: flex;
   margin:0 auto;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   text-align: center;
 }
-.authorBox {
-  display: flex;
-  width: 80%;
-  justify-content:left;
-  padding:3%;
-}
-.author {
-  font-size: 30px;
-  display: flex;
-}
-.authorinfo {
-  display: flex;
-  flex-direction: column;
-  padding-left: 5%
-}
-.tagline {
-  font-size: 18px;
-  display: flex;
-}
-.circle {
-  height:50px;
-  width:50px;
-  border-radius: 50%
-}
+
 .input {
-  padding:3%;
   display: flex;
   text-align: center;
-  border:2px solid black;
-  height:150px;
-  width:100%;
+  height: 40px;
+  border: 1px solid black;
+  width:30%;
 }
-.inputFile {
-  display: none;
-}
+
 .box {
   display: flex;
   flex-direction: column;
@@ -70,13 +43,19 @@
   opacity: 25%;
   transition: 0.3s background-color ease;
 }
-.subtitle {
-  font-size: px(20);
-  color: grey;
+
+.buttonInside {
+  display: flex;
+  height: 40px;
+  width:200px;
+  text-align: center;
+  justify-content: center;
+  vertical-align: center;
+  border: 1px solid black;
+  cursor: pointer;
+  line-height: 2;
 }
-.body {
-  font-size:px(18);
-}
+
 .buttonBox {
   display: flex;
   justify-content: center;

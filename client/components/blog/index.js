@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { IndexLink } from 'react-router';
-import { postBox, buttonBox, input, title, box, button, titleBox, subtitle, body, circle, authorBox, author,authorinfo, tagline, date } from './styles';
+import { postBox, buttonBox, input, title, box, button, titleBox, subtitle, body, bodyEdit, circle, authorBox, author,authorinfo, tagline, date, inputFile } from './styles';
 import { getPosts, showNewPost } from '../../actions/blog';
 import { check } from '../../actions/user';
 
 class Blog extends Component {
    constructor(props) {
     super(props);
-    this.handleSignUp=this.handleSignUp.bind(this)
   }
   componentDidMount = () => {
     this.props.check();
@@ -18,13 +17,6 @@ class Blog extends Component {
   handleToggleLogin = () => {
     this.props.toggleLoginSignup()
   }
-  handleSignUp = (e) => {
-    const name = e.target.parentElement.parentElement.children[1].children[0].value;
-    const email = e.target.parentElement.parentElement.children[1].children[1].value;
-    const password = e.target.parentElement.parentElement.children[1].children[2].value;
-    const passwordConfirm = e.target.parentElement.parentElement.children[1].children[3].value;
-    this.props.signUp(name, email, password, passwordConfirm);
-  }
   handleShowNewPost = (e) => {
     this.props.showNewPost()
   }
@@ -32,7 +24,7 @@ class Blog extends Component {
     if(this.props.loggedIn){
       return(
         this.props.showNewBlogPost ? (
-             <button className={button} onClick={this.handleShowNewPost}>Hide New Post</button>
+            <button className={button} onClick={this.handleShowNewPost}>Hide New Post</button>
             ) : (
             <button className={button} onClick={this.handleShowNewPost} >New Pst</button>
             )
@@ -45,13 +37,19 @@ class Blog extends Component {
         <div className={postBox}>
           <div className={title}>
               <input className={input} type='text' placeholder='title' />
-            </div>
-            <div className={subtitle}>
-              <input className={input} type='text' placeholder='subtitle'/>
-            </div>
-            <div className={body}>
-              <textarea className={input}  type='text' placeholder='body' />
-            </div>
+          </div>
+          <div className={subtitle}>
+            <input className={input} type='text' placeholder='subtitle'/>
+          </div>
+          <div className={bodyEdit}>
+            <textarea className={input}  type='text' placeholder='body' />
+          </div>
+          <div className={buttonBox}>
+            <label className={button}>
+              Goofy Headshot Pls
+              <input className={inputFile} type='file' />
+            </label>
+          </div>
         </div>
       )
     } else {
@@ -60,7 +58,6 @@ class Blog extends Component {
 
   }
   render() {
-    console.log(this.props.showNewBlogPost);
     return (
       <div>
         <Helmet title='Blog' />
@@ -101,7 +98,7 @@ class Blog extends Component {
               odify the source code for publishing a new appl
               ication release and how to perfo
               rm rolling updates in Kubern
-              etes using the Helm CLI.
+              etes using the Helm CLI
             </div>
           </div>
         </div>
