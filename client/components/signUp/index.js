@@ -15,6 +15,7 @@ class LoginSignUp extends Component {
     const email = e.target.parentElement.parentElement.children[1].children[1].value;
     const password = e.target.parentElement.parentElement.children[1].children[2].value;
     const passwordConfirm = e.target.parentElement.parentElement.children[1].children[3].value;
+    //need to check values an disable button
     this.props.signUp(name, email, password, passwordConfirm);
   }
   render() {
@@ -29,7 +30,7 @@ class LoginSignUp extends Component {
           <input className={input} type='text' placeholder={'Name'} />
           <input className={input} type='text' placeholder={'Email'} />
           <input className={input} type='password' placeholder={'Password'} />
-          <input className={input} type='password' placeholder={'Code we gave you :)'} />
+          <input className={input} type='password' placeholder={'Password Confirm'} />
         </div>
         <div onClick={this.handleSignUp} className={buttonBox}>
           <a className={button}>Sign Up</a>

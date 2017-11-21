@@ -38,6 +38,7 @@ func (api *API) Bind(group *echo.Group) {
 	group.DELETE("/logout", api.logout)
 	group.GET("/user", api.getUsers)
 	group.POST("/user", api.createUser)
+	group.POST("/userad", api.createAdvertiser)
 	group.GET("/user/:userID", api.getUser)
 	group.PUT("/user/:userID", api.updateUser)
 	group.DELETE("/user/:userID", api.deleteUser)
@@ -167,6 +168,35 @@ func (api *API) createUser(c echo.Context) (err error) {
 		return err
 	}
 	roles := "user"
+	posts := new([]model.BlogPost)
+	users := model.User{0, u.Name, u.Email, hash, &roles, *posts}
+
+	if err := api.db.Create(&users).Error; err != nil {
+		return err
+	} else {
+		return c.JSON(http.StatusOK, users)
+	}
+
+}
+
+func (api *API) createAdvertiser(c echo.Context) (err error) {
+
+	type InitialUser struct {
+		Name     *string `json:"name" gorm:"not null" query:"name"`
+		Business *string `json:"business" gorm:"not null" query:"name"`
+		Email    *string `json:"email" gorm:"not null" query:"email" valid:"email"`
+		Password *string `json:"password" gorm:"not null"`
+	}
+	u := new(InitialUser)
+	if err = c.Bind(u); err != nil {
+		return err
+	}
+	password := []byte(*u.Password)
+	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	roles := "Advertiser"
 	posts := new([]model.BlogPost)
 	users := model.User{0, u.Name, u.Email, hash, &roles, *posts}
 

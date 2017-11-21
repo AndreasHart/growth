@@ -26,7 +26,7 @@ class Blog extends Component {
         this.props.showNewBlogPost ? (
             <button className={button} onClick={this.handleShowNewPost}>Hide New Post</button>
             ) : (
-            <button className={button} onClick={this.handleShowNewPost} >New Pst</button>
+            <button className={button} onClick={this.handleShowNewPost} >New Post</button>
             )
           )
     }
@@ -46,7 +46,7 @@ class Blog extends Component {
           </div>
           <div className={buttonBox}>
             <label className={button}>
-              Goofy Headshot Pls
+              Image for Background
               <input className={inputFile} type='file' />
             </label>
           </div>

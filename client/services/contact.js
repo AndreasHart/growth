@@ -17,7 +17,7 @@ export default () => {
     }),
     createAdvertiser: ({ name, email, business, password }) => client.request({
       method: 'POST',
-      url: '/api/advertiser',
+      url: '/api/userad',
       data: {
         name,
         email,
