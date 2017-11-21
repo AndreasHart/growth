@@ -11,4 +11,5 @@ require('#app/components/app/styles');
 require('#app/components/homepage/styles');
 require('#app/components/usage/styles');
 require('#app/components/not-found/styles');
-require('#app/components/LoginSignUp/styles');
+require('#app/components/Login/styles');
+require('#app/components/signUp/styles');

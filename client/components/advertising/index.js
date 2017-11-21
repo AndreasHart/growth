@@ -40,4 +40,4 @@ class Advertising extends Component {
 
 }
 
-export default connect(store => ({ loginOrSignUp: store.login.loginOrSignUp }),{ advertiser})(Advertising);
+export default connect(store => ({ loginOrSignUp: store.login.loginOrSignUp }),{ advertiser })(Advertising);

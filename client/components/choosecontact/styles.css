@@ -1,10 +1,10 @@
 .choiceBox {
   border: 1px solid black;
   width:100%;
-  height:200px;
+  height:350px;
   display: flex;
   margin:0 auto;
-  justify-content: space-around;
+  justify-content: space-between;
   text-align: center;
 }
 
@@ -19,7 +19,7 @@
 .box {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   margin:0 auto;
 }
 
@@ -54,6 +54,13 @@
   border: 1px solid black;
   cursor: pointer;
   line-height: 2;
+}
+.buttonInside:hover {
+  border: 2px solid black ;
+  text-decoration-line: underline;
+  box-shadow: .5px;
+  background-color: lightgrey;
+  transition: 0.3s background-color ease;
 }
 
 .buttonBox {

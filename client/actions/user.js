@@ -91,9 +91,9 @@ export function login(email, password) {
     };
     return userService().login(data)
       .then((response) => {
-        debugger;
         const { ID, Roles} = response.data;
         dispatch(loginSuccess(ID, Roles))
+
       })
       .catch((err) => {
         debugger;

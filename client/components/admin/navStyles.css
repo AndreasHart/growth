@@ -6,6 +6,7 @@
   justify-content: space-around;
   background-color: deepskyblue;
   vertical-align: center;
+  border-radius: 4px;
 }
 
 .item {

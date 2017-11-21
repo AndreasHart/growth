@@ -10,7 +10,14 @@ class LoginSignUp extends Component {
     super(props);
     this.handleSignUp=this.handleSignUp.bind(this)
   }
-  handleSignUp = (e) => {
+  handleCreateEventLoggedIn = (e) => {
+    const name = e.target.parentElement.parentElement.children[1].children[0].value;
+    const email = e.target.parentElement.parentElement.children[1].children[1].value;
+    const password = e.target.parentElement.parentElement.children[1].children[2].value;
+    const passwordConfirm = e.target.parentElement.parentElement.children[1].children[3].value;
+    this.props.signUp(name, email, password, passwordConfirm);
+  }
+  handleCreateEventPublic = (e) => {
     const name = e.target.parentElement.parentElement.children[1].children[0].value;
     const email = e.target.parentElement.parentElement.children[1].children[1].value;
     const password = e.target.parentElement.parentElement.children[1].children[2].value;
@@ -18,11 +25,11 @@ class LoginSignUp extends Component {
     this.props.signUp(name, email, password, passwordConfirm);
   }
   render() {
-    const { logedIn } = this.props.user;
-    if(user){
+    const { loggedIn } = this.props;
+    if(loggedIn){
       return (
       <div className={box} >
-        <Helmet title='SignUp' />
+        <Helmet title='Add Event' />
         <div className={titleBox}>
           <h2  className={title}>Add Event Here</h2>
         </div>
@@ -36,14 +43,14 @@ class LoginSignUp extends Component {
           <input className={input} type='text' placeholder={'NeighborHood'} />
           <input className={input} type='file' placeholder={'Event Image'} />
         </div>
-        <div onClick={this.handleSignUp} className={buttonBox}>
+        <div onClick={this.handleCreateEventLoggedIn} className={buttonBox}>
           <a className={button}>Add Event</a>
         </div>
       </div>);
     } else {
       return (
       <div className={box} >
-        <Helmet title='SignUp' />
+        <Helmet title='Add Event' />
         <div className={titleBox}>
           <h2  className={title}>Add Event Here</h2>
         </div>
@@ -59,7 +66,7 @@ class LoginSignUp extends Component {
           <input className={input} type='text' placeholder={'NeighborHood'} />
           <input className={input} type='file' placeholder={'Event Image'} />
         </div>
-        <div onClick={this.handleSignUp} className={buttonBox}>
+        <div onClick={this.handleCreateEventPublic} className={buttonBox}>
           <a className={button}>Add Event</a>
         </div>
       </div>);
