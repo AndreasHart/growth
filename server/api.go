@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/andreashart/growth/server/model"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -227,17 +227,22 @@ func (api *API) login(c echo.Context) (err error) {
 		if err := bcrypt.CompareHashAndPassword(user.Hash, password); err != nil {
 			return err
 		} else {
-			cookie := new(http.Cookie)
-			cookie.Name = "ID"
-			cookie.Value = strconv.Itoa(user.ID)
-			cookie.Expires = time.Now().Add(24 * time.Hour)
-			c.SetCookie(cookie)
-			type Data struct {
-				ID    int
-				Roles *string
+			token := jwt.New(jwt.SigningMethodHS256)
+
+			// Set claims
+			claims := token.Claims.(jwt.MapClaims)
+			claims["name"] = "Jon Snow"
+			claims["admin"] = true
+			claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+
+			// Generate encoded token and send it as response.
+			t, err := token.SignedString([]byte("secret"))
+			if err != nil {
+				return err
 			}
-			d := Data{user.ID, user.Roles}
-			return c.JSON(http.StatusOK, d)
+			return c.JSON(http.StatusOK, map[string]string{
+				"token": t,
+			})
 		}
 
 	}
@@ -434,7 +439,6 @@ func (api *API) addProductToOrder(c echo.Context) (err error) {
 		return c.JSON(http.StatusOK, order)
 	}
 }
-
 func (api *API) getBlogPosts(c echo.Context) error {
 	var blogPosts []model.BlogPost
 	if err := api.db.Find(&blogPosts).Error; err != nil {
