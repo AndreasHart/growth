@@ -11,7 +11,7 @@ BUNDLE        = server/data/static/build/bundle.js
 APP           = $(shell find client -type f)
 IMPORT_PATH   = $(shell pwd | sed "s|^$(GOPATH)/src/||g")
 APP_NAME      = $(shell pwd | sed 's:.*/::')
-TARGET        = $(BIN)/$(APP_NAME)
+TARGET        = $(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
 GLIDE         := $(shell command -v glide 2> /dev/null)
